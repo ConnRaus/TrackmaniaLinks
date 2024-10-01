@@ -19,9 +19,9 @@ body {
   left: 0;
   width: 100%;
   min-height: 100%;
-  background: linear-gradient(120deg, #ff7b54, #ffb26b, #fffb7d, #9ddfd3);
+  background: linear-gradient(120deg, #ff7b54, #f3ce4a, #41f574, #598bdd);
   background-size: 300% 300%;
-  animation: gradient 15s ease infinite;
+  animation: gradient 10s ease infinite;
   z-index: -5;
 }
 
