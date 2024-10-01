@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Brightside's TM Links!</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="styles.css" />
+
+    <!-- Firebase Authentication SDK -->
+  </head>
+
+  <body>
+    <div class="background"></div>
+
+    <!-- Add this div inside the body -->
+    <div class="background-animation"></div>
+
+    <div class="background-image"></div>
+
+    <button id="open-login-modal">Edit</button>
+    <button id="logout-button" style="display: none">Logout</button>
+
+    <div class="container">
+      <h1>Useful TM Links</h1>
+      <div id="links-container"></div>
+
+      <div class="action-buttons">
+        <button id="add-button">Add Link</button>
+        <button id="remove-button">Remove Link</button>
+      </div>
+    </div>
+
+    <!-- Modal for adding links -->
+    <div id="add-modal" class="modal hidden">
+      <div class="modal-content">
+        <span class="close-button">&times;</span>
+        <h2>Add a New Link</h2>
+        <input type="text" id="link-name" placeholder="Link Name" />
+        <input type="url" id="link-url" placeholder="Link URL" />
+        <button id="submit-add">Add</button>
+        <div id="error-message"></div>
+      </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="login-modal" class="modal hidden">
+      <div class="modal-content">
+        <span class="close-login">&times;</span>
+        <h2>Login</h2>
+        <input type="email" id="login-email" placeholder="Email" />
+        <input type="password" id="login-password" placeholder="Password" />
+        <button id="login-button">Login</button>
+        <div id="login-error-message"></div>
+      </div>
+    </div>
+
+    <!-- Firebase App (the core Firebase SDK) -->
+    <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"></script>
+    <!-- Firebase Realtime Database SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-database-compat.js"></script>
+    <!-- Firebase Auth SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-auth-compat.js"></script>
+
+    <!-- Your custom script -->
+    <script src="script.js"></script>
+  </body>
+</html>
