@@ -104,9 +104,16 @@ body {
   border: none;
   cursor: pointer;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  /* font-family: "Audiowide", sans-serif; */
   font-size: 12pt;
   font-weight: 700;
+  flex-grow: 1;
+  display: flex;
+  align-items: center; /* Vertically center items */
+  justify-content: center; /* Horizontally center items */
+}
+
+.button img {
+  margin-right: 10px;
 }
 
 .button:hover {
@@ -376,4 +383,31 @@ h1 {
 #login-button:hover {
   transform: scale(1.05);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Update the .link-container CSS */
+.link-container {
+  display: flex;
+  align-items: center;
+  width: 100%; /* Ensure the container spans the full width */
+}
+
+.down-button {
+  margin-left: 10px;
+  background-color: transparent;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: #6200ea;
+  transition: transform 0.2s ease;
+  padding: 0; /* Remove default padding */
+}
+
+.down-button:hover {
+  transform: translateY(2px);
+}
+
+.down-button:disabled {
+  opacity: 0.5;
+  cursor: default;
 }

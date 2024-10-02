@@ -21,6 +21,7 @@ const submitAdd = document.getElementById("submit-add");
 const closeButton = document.querySelector(".close-button");
 let removeMode = false;
 let selectedLinks = new Set(); // To track selected links for removal
+let isLoggedIn = false; // Track authentication state
 
 // Fetch links from database
 function fetchLinks() {
@@ -29,72 +30,63 @@ function fetchLinks() {
     const links = data
       ? Object.keys(data).map((key) => ({ id: key, ...data[key] }))
       : [];
+    // Sort the links by order
+    links.sort((a, b) => a.order - b.order);
     displayLinks(links);
   });
 }
 
 // Fetch the favicon from the website in two steps
 function getFavicon(linkUrl) {
-  // First, try fetching from the common favicon path: /favicon.ico
   return new Promise((resolve) => {
     const faviconUrl = new URL("/favicon.ico", linkUrl).href;
-
-    // Create an image element to test if favicon.ico exists
     const testImage = new Image();
     testImage.src = faviconUrl;
-    testImage.onload = () => resolve(faviconUrl); // If the image loads successfully
+    testImage.onload = () => resolve(faviconUrl);
     testImage.onerror = () => {
-      // If favicon.ico doesn't exist, try fetching and parsing the HTML
       fetchFaviconFromHtml(linkUrl)
         .then(resolve)
-        .catch(() => resolve("car.png")); // Use car.png as the final fallback
+        .catch(() => resolve("car.png"));
     };
   });
 }
 
-// Fetch and extract favicon from the linked site by parsing the HTML
 function fetchFaviconFromHtml(linkUrl) {
   return fetch(linkUrl)
     .then((response) => response.text())
     .then((html) => {
       const parser = new DOMParser();
       const doc = parser.parseFromString(html, "text/html");
-
-      // Look for favicon or apple-touch-icon
       const icon =
         doc.querySelector("link[rel~='icon']") ||
         doc.querySelector("link[rel='apple-touch-icon']");
-
-      // Return favicon URL if found, or fall back to car.png
       return icon ? new URL(icon.href, linkUrl).href : "car.png";
     })
-    .catch(() => "car.png"); // Fallback to car.png if error occurs
+    .catch(() => "car.png");
 }
 
 // Display links in the UI
 function displayLinks(links) {
   container.innerHTML = "";
-  links.forEach((link) => {
+  links.forEach((link, index) => {
+    const linkContainer = document.createElement("div");
+    linkContainer.classList.add("link-container");
+
     const button = document.createElement("button");
     button.classList.add("button");
 
     // Create an img element to display the favicon
     const icon = document.createElement("img");
     icon.alt = "Website Icon";
-    icon.style.width = "20px"; // Adjust the size as needed
+    icon.style.width = "20px";
     icon.style.height = "20px";
-    icon.style.marginRight = "10px"; // Add spacing between icon and text
-    icon.style.verticalAlign = "middle"; // Align icon with text
+    icon.style.verticalAlign = "middle";
 
-    // First try to get the favicon using /favicon.ico and then fallback to HTML parsing
     getFavicon(link.url).then((faviconUrl) => {
       icon.src = faviconUrl;
     });
 
-    // Add the favicon image to the button
     button.appendChild(icon);
-
-    // Add the link name as button text
     const buttonText = document.createTextNode(link.name);
     button.appendChild(buttonText);
 
@@ -108,13 +100,44 @@ function displayLinks(links) {
       button.addEventListener("click", () => window.open(link.url, "_blank"));
     }
 
-    container.appendChild(button);
+    linkContainer.appendChild(button);
+
+    if (isLoggedIn) {
+      // Create down arrow button
+      const downButton = document.createElement("button");
+      downButton.classList.add("down-button");
+      downButton.innerHTML = "&#x2193;"; // Unicode down arrow
+
+      if (index === links.length - 1) {
+        // Last link, disable down button
+        downButton.disabled = true;
+      } else {
+        // Add event listener to swap order with next link
+        downButton.addEventListener("click", () => {
+          swapLinkOrder(link, links[index + 1]);
+        });
+      }
+
+      linkContainer.appendChild(downButton);
+    }
+
+    container.appendChild(linkContainer);
   });
 
   updateRemoveButtonText();
 }
 
-// Add link to Firebase
+// Swap the order of two links
+function swapLinkOrder(link1, link2) {
+  // Swap the order values
+  const updates = {};
+  updates[`links/${link1.id}/order`] = link2.order;
+  updates[`links/${link2.id}/order`] = link1.order;
+
+  db.ref().update(updates);
+}
+
+// Add link to Firebase with order value
 submitAdd.addEventListener("click", () => {
   const name = document.getElementById("link-name").value;
   let url = document.getElementById("link-url").value;
@@ -125,13 +148,27 @@ submitAdd.addEventListener("click", () => {
       url = "http://" + url;
     }
 
-    const newLinkKey = db.ref().child("links").push().key;
-    const newLink = { name, url };
-    db.ref(`links/${newLinkKey}`).set(newLink);
+    // Fetch existing links to get max order
+    db.ref("links")
+      .once("value")
+      .then((snapshot) => {
+        const data = snapshot.val();
+        const links = data
+          ? Object.keys(data).map((key) => ({ id: key, ...data[key] }))
+          : [];
+        const maxOrder = links.reduce(
+          (max, link) => (link.order > max ? link.order : max),
+          0
+        );
 
-    document.getElementById("link-name").value = "";
-    document.getElementById("link-url").value = "";
-    addModal.classList.add("hidden");
+        const newLinkKey = db.ref().child("links").push().key;
+        const newLink = { name, url, order: maxOrder + 1 };
+        db.ref(`links/${newLinkKey}`).set(newLink);
+
+        document.getElementById("link-name").value = "";
+        document.getElementById("link-url").value = "";
+        addModal.classList.add("hidden");
+      });
   }
 });
 
@@ -193,9 +230,6 @@ window.addEventListener("click", (event) => {
 addButton.addEventListener("click", () => addModal.classList.remove("hidden"));
 closeButton.addEventListener("click", () => addModal.classList.add("hidden"));
 
-// Fetch initial links
-fetchLinks();
-
 // Authentication Elements
 const openLoginModalButton = document.getElementById("open-login-modal");
 const loginModal = document.getElementById("login-modal");
@@ -234,16 +268,21 @@ loginButton.addEventListener("click", () => {
 // Check Authentication State
 firebase.auth().onAuthStateChanged((user) => {
   if (user) {
+    isLoggedIn = true;
     // User is signed in
     addButton.style.display = "inline-block";
     removeButton.style.display = "inline-block";
     openLoginModalButton.style.display = "none";
+    logoutButton.style.display = "inline-block";
   } else {
+    isLoggedIn = false;
     // No user is signed in
     addButton.style.display = "none";
     removeButton.style.display = "none";
     openLoginModalButton.style.display = "inline-block";
+    logoutButton.style.display = "none";
   }
+  fetchLinks(); // Re-fetch the links to update the UI
 });
 
 const logoutButton = document.getElementById("logout-button");
@@ -257,12 +296,5 @@ logoutButton.addEventListener("click", () => {
     });
 });
 
-firebase.auth().onAuthStateChanged((user) => {
-  if (user) {
-    // Show logout button
-    logoutButton.style.display = "inline-block";
-  } else {
-    // Hide logout button
-    logoutButton.style.display = "none";
-  }
-});
+// Fetch initial links
+fetchLinks();
