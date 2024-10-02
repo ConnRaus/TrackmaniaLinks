@@ -89,12 +89,6 @@ body {
   z-index: 1;
 }
 
-h1 {
-  font-size: 2rem;
-  margin-bottom: 1rem;
-  color: #333;
-}
-
 #links-container {
   display: flex;
   flex-direction: column;
@@ -106,9 +100,13 @@ h1 {
   color: white;
   padding: 10px 20px;
   border-radius: 8px;
+  min-height: 50px;
   border: none;
   cursor: pointer;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  /* font-family: "Audiowide", sans-serif; */
+  font-size: 12pt;
+  font-weight: 700;
 }
 
 .button:hover {
@@ -138,6 +136,8 @@ h1 {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   border: none;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  font-family: "Audiowide", sans-serif;
+  font-weight: 700;
 }
 
 #add-button:hover,
@@ -252,7 +252,7 @@ a {
 
 h1 {
   font-size: 2rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
   color: #333;
   font-family: "Audiowide", sans-serif;
 }
@@ -347,10 +347,6 @@ h1 {
   .container {
     width: 90%;
     padding: 1rem;
-  }
-
-  h1 {
-    font-size: 1.5rem;
   }
 
   #open-login-modal,
