@@ -63,7 +63,7 @@ body {
     transparent 75%,
     transparent 100%
   );
-  background-size: 28.28px 28.28px; /* Ensures the pattern repeats correctly */
+  background-size: 28.28px 28.28px; /* Pattern repeat */
   animation: moveBackground 5s linear infinite;
   z-index: -2;
 }
@@ -83,7 +83,7 @@ body {
   border-radius: 12px;
   box-shadow: 0 6px 24px rgba(0, 0, 0, 0.3);
   max-width: 800px;
-  margin: 4rem auto; /* Centers horizontally and adds vertical spacing */
+  margin: 4rem auto;
   text-align: center;
   position: relative;
   z-index: 1;
@@ -108,8 +108,8 @@ body {
   font-weight: 700;
   flex-grow: 1;
   display: flex;
-  align-items: center; /* Vertically center items */
-  justify-content: center; /* Horizontally center items */
+  align-items: center;
+  justify-content: center;
 }
 
 .button img {
@@ -130,7 +130,7 @@ body {
   margin-top: 20px;
   display: flex;
   justify-content: center;
-  gap: 20px; /* Adjust the gap between the buttons */
+  gap: 20px;
 }
 
 #add-button,
@@ -181,7 +181,7 @@ a {
 }
 
 .modal-content {
-  position: relative; /* Add this line */
+  position: relative;
   background: white;
   padding: 2rem;
   border-radius: 12px;
@@ -242,19 +242,19 @@ a {
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
-/* Background image styling */
+/* Background trackmania image styling */
 .background-image {
-  position: fixed; /* Ensure the background stays fixed */
+  position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
   background-image: url("/img/tm.png");
-  background-size: contain; /* Adjust to 'cover' if you want the image to cover the entire area */
+  background-size: contain;
   background-repeat: no-repeat;
   background-position: center center;
-  opacity: 0.75; /* 50% transparency */
-  z-index: -1; /* Ensure the background is behind other content */
+  opacity: 0.75;
+  z-index: -1;
 }
 
 h1 {
@@ -318,7 +318,7 @@ h1 {
   font-size: 24px;
   color: #333;
   font-weight: bold;
-  z-index: 1; /* Ensure it's above other elements within the modal */
+  z-index: 1;
 }
 
 .close-button:hover,
@@ -389,7 +389,7 @@ h1 {
 .link-container {
   display: flex;
   align-items: center;
-  width: 100%; /* Ensure the container spans the full width */
+  width: 100%;
 }
 
 .down-button {
@@ -400,7 +400,7 @@ h1 {
   cursor: pointer;
   color: #6200ea;
   transition: transform 0.2s ease;
-  padding: 0; /* Remove default padding */
+  padding: 0;
 }
 
 .down-button:hover {
@@ -415,9 +415,9 @@ h1 {
 /* Footer styling */
 .footer {
   text-align: center;
-  font-size: 0.8rem; /* Adjust the font size as needed */
-  color: #fff; /* White text color */
-  background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black background */
+  font-size: 0.8rem;
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.7);
   padding: 10px;
   position: fixed;
   bottom: 0;
@@ -426,5 +426,5 @@ h1 {
 }
 
 body {
-  padding-bottom: 50px; /* Adjust based on footer height to prevent content overlap */
+  padding-bottom: 50px;
 }
