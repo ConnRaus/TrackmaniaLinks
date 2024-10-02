@@ -33,13 +33,70 @@ function fetchLinks() {
   });
 }
 
+// Fetch the favicon from the website in two steps
+function getFavicon(linkUrl) {
+  // First, try fetching from the common favicon path: /favicon.ico
+  return new Promise((resolve) => {
+    const faviconUrl = new URL("/favicon.ico", linkUrl).href;
+
+    // Create an image element to test if favicon.ico exists
+    const testImage = new Image();
+    testImage.src = faviconUrl;
+    testImage.onload = () => resolve(faviconUrl); // If the image loads successfully
+    testImage.onerror = () => {
+      // If favicon.ico doesn't exist, try fetching and parsing the HTML
+      fetchFaviconFromHtml(linkUrl)
+        .then(resolve)
+        .catch(() => resolve("car.png")); // Use car.png as the final fallback
+    };
+  });
+}
+
+// Fetch and extract favicon from the linked site by parsing the HTML
+function fetchFaviconFromHtml(linkUrl) {
+  return fetch(linkUrl)
+    .then((response) => response.text())
+    .then((html) => {
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(html, "text/html");
+
+      // Look for favicon or apple-touch-icon
+      const icon =
+        doc.querySelector("link[rel~='icon']") ||
+        doc.querySelector("link[rel='apple-touch-icon']");
+
+      // Return favicon URL if found, or fall back to car.png
+      return icon ? new URL(icon.href, linkUrl).href : "car.png";
+    })
+    .catch(() => "car.png"); // Fallback to car.png if error occurs
+}
+
 // Display links in the UI
 function displayLinks(links) {
   container.innerHTML = "";
   links.forEach((link) => {
     const button = document.createElement("button");
     button.classList.add("button");
-    button.textContent = link.name;
+
+    // Create an img element to display the favicon
+    const icon = document.createElement("img");
+    icon.alt = "Website Icon";
+    icon.style.width = "20px"; // Adjust the size as needed
+    icon.style.height = "20px";
+    icon.style.marginRight = "10px"; // Add spacing between icon and text
+    icon.style.verticalAlign = "middle"; // Align icon with text
+
+    // First try to get the favicon using /favicon.ico and then fallback to HTML parsing
+    getFavicon(link.url).then((faviconUrl) => {
+      icon.src = faviconUrl;
+    });
+
+    // Add the favicon image to the button
+    button.appendChild(icon);
+
+    // Add the link name as button text
+    const buttonText = document.createTextNode(link.name);
+    button.appendChild(buttonText);
 
     if (removeMode) {
       button.classList.add("remove-select");
