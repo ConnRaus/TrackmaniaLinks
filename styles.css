@@ -249,7 +249,7 @@ a {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-image: url("tm.png");
+  background-image: url("/img/tm.png");
   background-size: contain; /* Adjust to 'cover' if you want the image to cover the entire area */
   background-repeat: no-repeat;
   background-position: center center;
