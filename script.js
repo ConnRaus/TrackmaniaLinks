@@ -36,33 +36,10 @@ function fetchLinks() {
   });
 }
 
-// Fetch the favicon from the website in two steps
+// Fetch the favicon using a public favicon service
 function getFavicon(linkUrl) {
-  return new Promise((resolve) => {
-    const faviconUrl = new URL("/favicon.ico", linkUrl).href;
-    const testImage = new Image();
-    testImage.src = faviconUrl;
-    testImage.onload = () => resolve(faviconUrl);
-    testImage.onerror = () => {
-      fetchFaviconFromHtml(linkUrl)
-        .then(resolve)
-        .catch(() => resolve("car.png"));
-    };
-  });
-}
-
-function fetchFaviconFromHtml(linkUrl) {
-  return fetch(linkUrl)
-    .then((response) => response.text())
-    .then((html) => {
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(html, "text/html");
-      const icon =
-        doc.querySelector("link[rel~='icon']") ||
-        doc.querySelector("link[rel='apple-touch-icon']");
-      return icon ? new URL(icon.href, linkUrl).href : "car.png";
-    })
-    .catch(() => "car.png");
+  const domain = new URL(linkUrl).hostname;
+  return Promise.resolve(`https://api.faviconkit.com/${domain}/64`);
 }
 
 // Display links in the UI
@@ -81,7 +58,9 @@ function displayLinks(links) {
     icon.style.width = "20px";
     icon.style.height = "20px";
     icon.style.verticalAlign = "middle";
+    icon.style.marginRight = "10px"; // Ensure proper spacing between icon and text
 
+    // Use the updated getFavicon function
     getFavicon(link.url).then((faviconUrl) => {
       icon.src = faviconUrl;
     });
