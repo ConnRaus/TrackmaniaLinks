@@ -411,3 +411,20 @@ h1 {
   opacity: 0.5;
   cursor: default;
 }
+
+/* Footer styling */
+.footer {
+  text-align: center;
+  font-size: 0.8rem; /* Adjust the font size as needed */
+  color: #fff; /* White text color */
+  background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black background */
+  padding: 10px;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  z-index: 1;
+}
+
+body {
+  padding-bottom: 50px; /* Adjust based on footer height to prevent content overlap */
+}
