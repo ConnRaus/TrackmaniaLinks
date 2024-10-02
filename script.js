@@ -39,7 +39,7 @@ function fetchLinks() {
 // Fetch the favicon using a public favicon service
 function getFavicon(linkUrl) {
   const domain = new URL(linkUrl).hostname;
-  return Promise.resolve(`https://api.faviconkit.com/${domain}/64`);
+  return Promise.resolve(`https://api.faviconkit.com/${domain}/32`);
 }
 
 // Display links in the UI
