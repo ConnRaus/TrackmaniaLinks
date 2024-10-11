@@ -11,7 +11,6 @@ const logoutButton = document.getElementById("logout-button");
 const addButton = document.getElementById("add-button");
 const removeButton = document.getElementById("remove-button");
 
-// Create an object to hold the authentication state
 export const authState = { isLoggedIn: false };
 
 // Open Login Modal

@@ -46,7 +46,6 @@ body {
   }
 }
 
-/* Background Animation Styles */
 .background-animation {
   position: fixed;
   top: 0;
@@ -162,7 +161,6 @@ a {
   color: white;
 }
 
-/* Modal Styling */
 .modal {
   position: fixed;
   top: 0;
@@ -189,7 +187,6 @@ a {
   width: 300px;
 }
 
-/* Input field styling */
 .modal-content input {
   width: 100%;
   padding: 12px;
@@ -200,13 +197,11 @@ a {
   font-family: "Audiowide", sans-serif;
 }
 
-/* Red styling for remove mode */
 .remove-mode {
   background-color: #ff4757 !important;
   color: white;
 }
 
-/* Highlight selected links for removal */
 .selected {
   background-color: #ffcccc;
   border: 2px solid #ff4757;
@@ -242,7 +237,6 @@ a {
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
-/* Background trackmania image styling */
 .background-image {
   position: fixed;
   top: 0;
@@ -264,7 +258,6 @@ h1 {
   font-family: "Audiowide", sans-serif;
 }
 
-/* Login Button Styling */
 #open-login-modal {
   position: absolute;
   top: 20px;
@@ -286,7 +279,6 @@ h1 {
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
-/* Logout Button Styling */
 #logout-button {
   position: absolute;
   top: 20px;
@@ -308,7 +300,6 @@ h1 {
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
-/* Close button for modal */
 .close-button,
 .close-login {
   position: absolute;
@@ -331,7 +322,6 @@ h1 {
   color: #ff4757;
 }
 
-/* Input field styling */
 .modal-content input {
   position: relative;
   width: 100%;
@@ -385,7 +375,6 @@ h1 {
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
-/* Update the .link-container CSS */
 .link-container {
   display: flex;
   align-items: center;
@@ -412,7 +401,6 @@ h1 {
   cursor: default;
 }
 
-/* Footer styling */
 .footer {
   text-align: center;
   font-size: 0.8rem;
