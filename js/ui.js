@@ -80,7 +80,9 @@ export function displayLinks(links) {
 // Fetch the favicon
 function getFavicon(linkUrl) {
   const domain = new URL(linkUrl).hostname;
-  return Promise.resolve(`https://api.faviconkit.com/${domain}/32`);
+  return Promise.resolve(
+    `https://external-content.duckduckgo.com/ip3/${domain}.ico`
+  );
 }
 
 // Toggle link selection for removal
